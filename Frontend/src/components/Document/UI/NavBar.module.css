@@ -1,0 +1,14 @@
+.nav {
+  display: flex;
+  min-height: 2rem;
+  background: #edf2fa;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav > * {
+  padding: 1rem 3rem;
+}
+.link_logo {
+  text-decoration: none;
+  color: white;
+}

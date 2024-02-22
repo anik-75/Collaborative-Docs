@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+.ql-container.ql-snow {
+  border: none;
+}
+.text-editor .ql-editor {
+  width: 8.5in;
+  min-height: 11in;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  background-color: white;
+}
+
+.text-editor .ql-toolbar.ql-snow {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #f3f3f3;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+}
