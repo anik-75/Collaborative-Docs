@@ -5,12 +5,20 @@ import Homepage from "./pages/Homepage";
 import TextEditor from "./pages/TextEditor";
 import Protected from "./components/auth/Protected";
 import "./index.css";
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { RecoilRoot } from "recoil";
 import SocketProvider from "./components/context/socket.context";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import userSlice from "./store/user.slice";
 
 function App() {
+  // redux store
+  const store = configureStore({
+    reducer: {
+      users: userSlice,
+    },
+  });
+  // router config
   const router = createBrowserRouter([
     {
       path: "/",
@@ -57,9 +65,9 @@ function App() {
   ]);
   return (
     <Fragment>
-      <RecoilRoot>
+      <Provider store={store}>
         <RouterProvider router={router} />
-      </RecoilRoot>
+      </Provider>
     </Fragment>
   );
 }

@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { UserState } from "../../recoil/UserAtom";
+import { useSelector } from "react-redux";
 
 function Protected({ authentication, children }) {
-  const user = useRecoilValue(UserState);
+  const user = useSelector((store) => store.users);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authentication && user === null) {
+    if (authentication && user.authStatus !== authentication) {
       navigate("/login");
-    } else if (!authentication && user !== null) {
+    } else if (!authentication && user.authStatus !== authentication) {
       navigate("/");
     }
   }, [user, authentication, navigate]);

@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserAstronaut,
-  faFileLines,
-  faLink,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFileLines, faLink } from "@fortawesome/free-solid-svg-icons";
 import User from "../User";
 
 function TextEditorHeader({

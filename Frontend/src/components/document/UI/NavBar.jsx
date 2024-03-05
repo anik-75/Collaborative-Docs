@@ -1,11 +1,8 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Search from "../Search";
-import {
-  faUserAstronaut,
-  faFileLines,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 import styles from "./NavBar.module.css";
 import User from "../User";
 function NavBar() {

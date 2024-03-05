@@ -1,11 +1,10 @@
-import React, { useEffect, createContext, useState, useContext } from "react";
+import { useEffect, createContext, useState, useContext } from "react";
 import { io } from "socket.io-client";
-import { socketProviderProps } from "./types";
 
 const SocketContext = createContext(null);
 
-const SocketProvider = ({ children }: socketProviderProps) => {
-  const [socket, setSocket] = useState<SocketIOClient.Socket | null>(null);
+const SocketProvider = ({ children }) => {
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const newSocket = io("http://localhost:3000");
