@@ -10,21 +10,20 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import TextEditorHeader from "../components/document/UI/TextEditorHeader";
 import Share from "../components/document/Share";
-import { useSocket } from "../components/context/socket.context";
+import { useSocket } from "../components/context/useSocket";
 import { useSelector } from "react-redux";
 
 function TextEditor() {
-  const [editorValue, setEditorValue] = useState({}); // Initialize with empty Delta
+  const [editorValue, setEditorValue] = useState({});
   const [docTitle, setDocTitle] = useState("");
   const [showShare, setShowShare] = useState(false);
   const [shareLink, setShareLink] = useState("");
-  const params = useParams();
-  const documentId = params.documentId;
-
   const [docOwner, setDocOwner] = useState(false);
-  const user = useSelector((store) => store.users);
   const [collaboratorsRole, setCollaboratorsRole] = useState("view");
 
+  const params = useParams();
+  const documentId = params.documentId;
+  const user = useSelector((store) => store.users);
   const socket = useSocket();
 
   // Fetch document for /:documentId
@@ -56,15 +55,21 @@ function TextEditor() {
     if (!socket) {
       return;
     }
+
     function handleReceiveChange(data) {
       // Merge received Delta into the existing editor content
       setEditorValue(data);
     }
+    function handleTitleChange(title) {
+      setDocTitle(title);
+    }
     socket.on("receive-change", handleReceiveChange);
+    socket.on("receive-title-change", handleTitleChange);
     // cleanup
     return () => {
       if (socket) {
         socket.off("receive-change", handleReceiveChange);
+        socket.off("receive-title-change", handleTitleChange);
       }
     };
   }, [socket]);
@@ -73,27 +78,29 @@ function TextEditor() {
     // Send changes to the socket to update other users
     if (source !== "user") return;
     setEditorValue(editor.getContents());
-    socket.emit("text-change", editor.getContents());
     saveDocument({ content: editor.getContents() });
   };
 
   const saveDocument = async ({ content, docTitle, collaboratorsRole }) => {
     // save data to DB
-    const data = await axios.put(
-      `/api/documents/${documentId}`,
-      {
-        title: docTitle,
-        content: content,
-        collaboratorsRole,
-      },
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const data = await axios.put(
+        `/api/documents/${documentId}`,
+        {
+          title: docTitle,
+          content: content,
+          collaboratorsRole,
         },
-      }
-    );
-    console.log(data);
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

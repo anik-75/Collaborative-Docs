@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Protected({ authentication, children }) {
-  const user = useSelector((store) => store.users);
+  const user = useSelector((store) => {
+    console.log(store);
+    return store.users;
+  });
   const navigate = useNavigate();
 
   useEffect(() => {

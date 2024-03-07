@@ -8,16 +8,10 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SocketProvider from "./components/context/socket.context";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import userSlice from "./store/user.slice";
+import { store, persistor } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 function App() {
-  // redux store
-  const store = configureStore({
-    reducer: {
-      users: userSlice,
-    },
-  });
   // router config
   const router = createBrowserRouter([
     {
@@ -66,7 +60,9 @@ function App() {
   return (
     <Fragment>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <PersistGate loading={null} persistor={persistor}>
+          <RouterProvider router={router} />
+        </PersistGate>
       </Provider>
     </Fragment>
   );

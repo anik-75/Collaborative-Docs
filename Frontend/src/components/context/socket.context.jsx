@@ -1,7 +1,7 @@
-import { useEffect, createContext, useState, useContext } from "react";
+import { useEffect, createContext, useState } from "react";
 import { io } from "socket.io-client";
 
-const SocketContext = createContext(null);
+export const SocketContext = createContext(null);
 
 const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
@@ -23,12 +23,3 @@ const SocketProvider = ({ children }) => {
 };
 
 export default SocketProvider;
-
-export const useSocket = () => {
-  const socket = useContext(SocketContext);
-  if (!socket) {
-    console.log("socket not found");
-    return;
-  }
-  return socket;
-};

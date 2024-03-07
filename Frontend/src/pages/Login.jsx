@@ -1,8 +1,7 @@
 import { Fragment, useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { removeUser, setUser } from "../store/user.slice";
+import { removeUser, login } from "../store/auth.slice";
 
 const initialState = {
   email: "",
@@ -16,23 +15,10 @@ function Login() {
   async function loginHandler(e) {
     e.preventDefault();
     try {
-      const data = await axios.post(`/api/users/login`, credentials, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (data.status === 200) {
-        dispatch(
-          setUser({
-            username: data.data.username,
-            userId: data.data.userId,
-            authStatus: true,
-          })
-        );
-        navigate("/");
-        setCredentials(initialState);
-      } else {
+      dispatch(login(credentials));
+      navigate("/");
+      setCredentials(initialState);
+      {
         removeUser();
         setCredentials(initialState);
       }

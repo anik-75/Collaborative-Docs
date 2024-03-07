@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines, faLink } from "@fortawesome/free-solid-svg-icons";
 import User from "../User";
+import { useSocket } from "../../context/useSocket";
 
 function TextEditorHeader({
   title,
@@ -10,8 +11,10 @@ function TextEditorHeader({
   setShowShare,
   admin,
 }) {
+  const socket = useSocket();
   const changeTitleHandler = (e) => {
     setDocTitle(e.target.value);
+    socket.emit("title-change", e.target.value);
     saveDocument({ docTitle: e.target.value });
   };
   return (

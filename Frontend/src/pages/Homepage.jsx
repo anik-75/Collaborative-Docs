@@ -59,6 +59,7 @@ function Homepage() {
     <Fragment>
       {/* NavBar */}
       <NavBar />
+
       {/* New Document */}
       <div className="h-60 border-2 flex flex-row  items-center bg-[#f1f3f4]">
         <button
@@ -74,8 +75,8 @@ function Homepage() {
           </div>
         </button>
       </div>
-      {/* Document List */}
 
+      {/* Document List */}
       <div className="flex justify-center">
         <table className="min-w-[70%] divide-y divide-gray-200 dark:divide-gray-700 border-collapse">
           <thead>

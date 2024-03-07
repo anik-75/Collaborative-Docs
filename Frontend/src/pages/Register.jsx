@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import authService from "../services/authService";
 
 const initialState = {
   username: "",
@@ -14,12 +14,7 @@ function Register() {
   async function registerHandler(event) {
     event.preventDefault();
     try {
-      const data = await axios.post(`/api/users/register`, credentials, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const data = await authService.register(credentials);
       if (data.status === 201) {
         navigate("/login");
         setCredentials(initialState);
