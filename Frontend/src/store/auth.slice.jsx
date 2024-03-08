@@ -25,8 +25,6 @@ const userSlice = createSlice({
 
 export const { setUser, removeUser } = userSlice.actions;
 
-// TODO : Persist User
-
 export const login = (credentials, successCallback) => {
   return async (dispatch) => {
     try {
@@ -48,9 +46,11 @@ export const login = (credentials, successCallback) => {
   };
 };
 
-export const logout = () => {
+export const logout = (successCallback) => {
   return (dispatch) => {
-    dispatch(removeUser);
+    dispatch(removeUser());
+    localStorage.removeItem("persist:root");
+    successCallback("/login");
   };
 };
 

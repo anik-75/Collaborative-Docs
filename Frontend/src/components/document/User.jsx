@@ -1,9 +1,23 @@
 import { Avatar, Dropdown } from "flowbite-react";
 import { HiCog, HiOutlinePlusSm, HiLogout, HiViewGrid } from "react-icons/hi";
 import avatar from "../../images/Avatar.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createDocument } from "../../store/documents.slice";
+import { logout } from "../../store/auth.slice";
 
 function User() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function createDocumentHandler() {
+    dispatch(createDocument(navigate));
+  }
+
+  function logoutHandler() {
+    dispatch(logout(navigate));
+  }
+
   return (
     <>
       <div className="mr-[1rem] ">
@@ -18,9 +32,13 @@ function User() {
             Home
           </Dropdown.Item>
           {/* TODO Document Service */}
-          <Dropdown.Item icon={HiOutlinePlusSm}>New Document</Dropdown.Item>
+          <Dropdown.Item icon={HiOutlinePlusSm} onClick={createDocumentHandler}>
+            New Document
+          </Dropdown.Item>
           <Dropdown.Item icon={HiCog}>Settings</Dropdown.Item>
-          <Dropdown.Item icon={HiLogout}>Logout</Dropdown.Item>
+          <Dropdown.Item icon={HiLogout} onClick={logoutHandler}>
+            Logout
+          </Dropdown.Item>
         </Dropdown>
       </div>
     </>
