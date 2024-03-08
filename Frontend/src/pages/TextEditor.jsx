@@ -7,11 +7,11 @@ import { useEffect, useState, Fragment } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import TextEditorHeader from "../components/document/UI/TextEditorHeader";
 import Share from "../components/document/Share";
 import { useSocket } from "../components/context/useSocket";
 import { useSelector } from "react-redux";
+import documentService from "../services/documentService";
 
 function TextEditor() {
   const [editorValue, setEditorValue] = useState({});
@@ -23,25 +23,24 @@ function TextEditor() {
 
   const params = useParams();
   const documentId = params.documentId;
-  const user = useSelector((store) => store.users);
+  const user = useSelector((store) => store.user);
   const socket = useSocket();
 
   // Fetch document for /:documentId
   useEffect(() => {
     async function fetchDocumentContent() {
       try {
-        const document = await axios.get(`/api/documents/${documentId}`, {
-          withCredentials: true,
-        });
-        setDocTitle(document.data.document.title);
-        setEditorValue(document.data.document.content);
+        const response = await documentService.getDocument(documentId);
+        console.log(response);
+        setDocTitle(response.title);
+        setEditorValue(response.content);
         setShareLink(`${window.location.origin}${window.location.pathname}`);
-        setCollaboratorsRole(document.data.document.collaboratorsRole);
-        if (String(document.data.owner) === String(user?.userId)) {
+        setCollaboratorsRole(response.collaboratorsRole);
+        if (String(response.owner) === String(user?.userId)) {
           setDocOwner(true);
         }
         if (socket) {
-          socket.emit("join-document", document.data.document["_id"]);
+          socket.emit("join-document", response["_id"]);
         }
       } catch (err) {
         console.error(err);
@@ -65,6 +64,7 @@ function TextEditor() {
     }
     socket.on("receive-change", handleReceiveChange);
     socket.on("receive-title-change", handleTitleChange);
+
     // cleanup
     return () => {
       if (socket) {
@@ -82,21 +82,12 @@ function TextEditor() {
   };
 
   const saveDocument = async ({ content, docTitle, collaboratorsRole }) => {
-    // save data to DB
     try {
-      const data = await axios.put(
-        `/api/documents/${documentId}`,
-        {
-          title: docTitle,
-          content: content,
-          collaboratorsRole,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+      await documentService.updateDocument(
+        documentId,
+        content,
+        docTitle,
+        collaboratorsRole
       );
     } catch (err) {
       console.log(err);

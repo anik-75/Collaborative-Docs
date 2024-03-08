@@ -7,7 +7,7 @@ const initialState = {
   authStatus: false,
 };
 const userSlice = createSlice({
-  name: "users",
+  name: "user",
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -26,23 +26,31 @@ const userSlice = createSlice({
 export const { setUser, removeUser } = userSlice.actions;
 
 // TODO : Persist User
-// export const
 
-export const login = (credentials) => {
+export const login = (credentials, successCallback) => {
   return async (dispatch) => {
-    const data = await authService.login(credentials);
-    console.log(data);
-    if (data.status === 200) {
-      dispatch(
-        setUser({
-          username: data.data.username,
-          userId: data.data.userId,
-          authStatus: true,
-        })
-      );
-    } else {
-      removeUser();
+    try {
+      const response = await authService.login(credentials);
+      if (response.status === 200) {
+        dispatch(
+          setUser({
+            username: response.data.username,
+            userId: response.data.userId,
+            authStatus: true,
+          })
+        );
+        successCallback();
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(logout());
     }
+  };
+};
+
+export const logout = () => {
+  return (dispatch) => {
+    dispatch(removeUser);
   };
 };
 

@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 
 function Protected({ authentication, children }) {
   const user = useSelector((store) => {
-    console.log(store);
-    return store.users;
+    return store.user;
   });
   const navigate = useNavigate();
 
@@ -16,7 +15,7 @@ function Protected({ authentication, children }) {
       navigate("/");
     }
   }, [user, authentication, navigate]);
-  console.log(user);
+
   return <>{children}</>;
 }
 

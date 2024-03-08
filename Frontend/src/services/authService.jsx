@@ -3,13 +3,13 @@ import axios from "axios";
 class AuthService {
   async login(credentials) {
     try {
-      const data = await axios.post(`/api/users/login`, credentials, {
+      const response = await axios.post(`/api/users/login`, credentials, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       });
-      return data;
+      return response;
     } catch (err) {
       console.log(err);
     }

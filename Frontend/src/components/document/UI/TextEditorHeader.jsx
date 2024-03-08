@@ -35,7 +35,6 @@ function TextEditorHeader({
               onChange={changeTitleHandler}
               name="title"
               value={title}
-              placeholder="Untitled"
               className="border-2  px-1  text-justify text-sm py-1 bg-[#edf2fa] focus:bg-white"
             />
           </div>

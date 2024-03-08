@@ -16,8 +16,8 @@ function Register() {
     try {
       const data = await authService.register(credentials);
       if (data.status === 201) {
-        navigate("/login");
         setCredentials(initialState);
+        navigate("/login");
       } else {
         setCredentials(initialState);
       }

@@ -1,60 +1,39 @@
-import { Fragment, useEffect, useState } from "react";
-import axios from "axios";
+import { Fragment, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/document/UI/NavBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createDocument,
+  deleteDocument,
+  fetchAllDocuments,
+} from "../store/documents.slice";
 
 function Homepage() {
-  const [documents, setDocuments] = useState([]);
+  const documents = useSelector((store) => store.document);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // New Document create Handler
   async function createDocumentHandler() {
-    const data = await axios.post(
-      `/api/documents/create`,
-      {},
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (data.status === 201) navigate(`/documents/${data.data.id}`);
+    dispatch(createDocument(navigate));
   }
 
   // fetch all documents of user
   useEffect(() => {
-    const fetchAllDocs = async () => {
-      try {
-        const data = await axios.get(`/api/documents`, {
-          withCredentials: true,
-        });
-        setDocuments(data.data.document);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAllDocs();
-  }, []);
+    dispatch(fetchAllDocuments());
+  }, [dispatch]);
+
+  // delete Document
+  async function deleteDocumentHandler(documentId) {
+    dispatch(deleteDocument(documentId));
+  }
 
   function documentListClickHandler(documentId) {
     navigate(`/documents/${documentId}`);
   }
 
-  async function deleteDocumentHandler(documentId) {
-    try {
-      await axios.delete(`/api/documents/${documentId}`);
-      const documentsAfterDeletion = documents.filter(
-        (document) => document["_id"] !== documentId
-      );
-      setDocuments(documentsAfterDeletion);
-    } catch (err) {
-      console.log(err);
-      return;
-    }
-  }
   return (
     <Fragment>
       {/* NavBar */}

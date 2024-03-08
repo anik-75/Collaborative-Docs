@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import userReducer from "../store/auth.slice";
+import userReducer from "./auth.slice";
+import documentReducer from "./documents.slice";
 import {
   persistStore,
   persistReducer,
@@ -18,7 +19,8 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  users: userReducer,
+  user: userReducer,
+  document: documentReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -32,6 +34,4 @@ export const store = configureStore({
       },
     }),
 });
-export const persistor = persistStore(store, {
-  onBeforeLift: () => console.log("Before rehydration"),
-});
+export const persistor = persistStore(store);

@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { removeUser, login } from "../store/auth.slice";
+import { login } from "../store/auth.slice";
 
 const initialState = {
   email: "",
@@ -12,19 +12,15 @@ function Login() {
   const [credentials, setCredentials] = useState(initialState);
   const dispatch = useDispatch();
 
-  async function loginHandler(e) {
+  function loginHandler(e) {
     e.preventDefault();
-    try {
-      dispatch(login(credentials));
-      navigate("/");
-      setCredentials(initialState);
-      {
-        removeUser();
-        setCredentials(initialState);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    const loginInfo = credentials;
+    setCredentials(initialState);
+    dispatch(
+      login(loginInfo, () => {
+        navigate("/");
+      })
+    );
   }
 
   return (
