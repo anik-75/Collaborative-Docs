@@ -9,7 +9,7 @@ import "react-quill/dist/quill.snow.css";
 import { useParams } from "react-router-dom";
 import TextEditorHeader from "../components/document/UI/TextEditorHeader";
 import Share from "../components/document/Share";
-import { useSocket } from "../components/context/useSocket";
+import { useSocket } from "../context/useSocket";
 import { useSelector } from "react-redux";
 import documentService from "../services/documentService";
 
@@ -31,7 +31,6 @@ function TextEditor() {
     async function fetchDocumentContent() {
       try {
         const response = await documentService.getDocument(documentId);
-        console.log(response);
         setDocTitle(response.title);
         setEditorValue(response.content);
         setShareLink(`${window.location.origin}${window.location.pathname}`);
@@ -78,6 +77,7 @@ function TextEditor() {
     // Send changes to the socket to update other users
     if (source !== "user") return;
     setEditorValue(editor.getContents());
+    socket.emit("text-change", editor.getContents());
     saveDocument({ content: editor.getContents() });
   };
 
@@ -103,6 +103,7 @@ function TextEditor() {
         saveDocument={saveDocument}
         setShowShare={setShowShare}
         admin={docOwner}
+        readOnly={docOwner || collaboratorsRole === "edit" ? false : true}
       />
 
       {/* Editor ToolBar */}

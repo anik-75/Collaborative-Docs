@@ -1,7 +1,33 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { FaSortDown } from "react-icons/fa";
+import { FaSortUp } from "react-icons/fa";
+import { sortDocuments } from "../../store/documents.slice";
 
 const DocumentList = ({ documentListClickHandler, deleteDocumentHandler }) => {
-  const document = useSelector((store) => store.document);
+  const document = useSelector((store) => store.document.searchDocuments);
+  const dispatch = useDispatch();
+  console.log(document);
+  const [sort, setSort] = useState({
+    sortBy: "updatedAt",
+    sortOrder: "DESC",
+  });
+
+  function sortHandler(sortBy, sortOrder) {
+    setSort({
+      sortBy,
+      sortOrder,
+    });
+    dispatch(sortDocuments({ sortBy, sortOrder }));
+    console.log("doc", document);
+
+    setSort((prevState) => {
+      return {
+        sortBy: prevState.sortBy,
+        sortOrder: sortOrder === "ASC" ? "DESC" : "ASC",
+      };
+    });
+  }
   return (
     <div>
       <div className="flex justify-center">
@@ -10,21 +36,52 @@ const DocumentList = ({ documentListClickHandler, deleteDocumentHandler }) => {
             <tr>
               <th
                 scope="col"
-                className="  px-6 py-3 text-start text-base font-medium text-gray-500 uppercase"
+                className="flex items-center cursor-pointer  px-6 py-3 text-start text-base font-medium text-gray-500 uppercase"
               >
-                Title
+                <span className="flex">
+                  {sort &&
+                  sort.sortBy === "title" &&
+                  sort.sortOrder === "ASC" ? (
+                    <FaSortUp onClick={() => sortHandler("title", "ASC")} />
+                  ) : (
+                    <FaSortDown onClick={() => sortHandler("title", "DESC")} />
+                  )}
+                  <span>Title</span>
+                </span>
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-start text-base font-medium text-gray-500 uppercase"
+                className=" cursor-pointer px-6 py-3 text-start text-base font-medium text-gray-500 uppercase"
               >
-                Last Edit
+                <span className="flex">
+                  {sort &&
+                  sort.sortBy === "updatedAt" &&
+                  sort.sortOrder === "ASC" ? (
+                    <FaSortUp onClick={() => sortHandler("updatedAt", "ASC")} />
+                  ) : (
+                    <FaSortDown
+                      onClick={() => sortHandler("updatedAt", "DESC")}
+                    />
+                  )}
+                  <span>Last Edit</span>
+                </span>
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-start text-base font-medium text-gray-500 uppercase"
+                className="cursor-pointer px-6 py-3 text-start text-base font-medium text-gray-500 uppercase"
               >
-                Created On
+                <span className="flex">
+                  {sort &&
+                  sort.sortBy === "createdAt" &&
+                  sort.sortOrder === "ASC" ? (
+                    <FaSortUp onClick={() => sortHandler("createdAt", "ASC")} />
+                  ) : (
+                    <FaSortDown
+                      onClick={() => sortHandler("createdAt", "DESC")}
+                    />
+                  )}
+                  <span>Created On</span>
+                </span>
               </th>
               <th
                 scope="col"
@@ -35,7 +92,7 @@ const DocumentList = ({ documentListClickHandler, deleteDocumentHandler }) => {
             </tr>
           </thead>
           <tbody>
-            {document.searchDocuments.map((document) => {
+            {document.map((document) => {
               let createdAt = document.createdAt;
               let updatedAt = document.updatedAt;
               createdAt = new Date(createdAt);

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines, faLink } from "@fortawesome/free-solid-svg-icons";
 import User from "../User";
-import { useSocket } from "../../context/useSocket";
+import { useSocket } from "../../../context/useSocket";
 
 function TextEditorHeader({
   title,
@@ -10,13 +10,17 @@ function TextEditorHeader({
   saveDocument,
   setShowShare,
   admin,
+  readOnly,
 }) {
+  console.log(readOnly);
+
   const socket = useSocket();
   const changeTitleHandler = (e) => {
     setDocTitle(e.target.value);
     socket.emit("title-change", e.target.value);
     saveDocument({ docTitle: e.target.value });
   };
+
   return (
     <div className="flex flex-row items-center justify-between py-3 px-5 bg-[#edf2fa] box-border">
       <div className="flex flex-row items-center">
@@ -35,7 +39,10 @@ function TextEditorHeader({
               onChange={changeTitleHandler}
               name="title"
               value={title}
-              className="border-2  px-1  text-justify text-sm py-1 bg-[#edf2fa] focus:bg-white"
+              className={` px-1  text-justify text-sm py-1 bg-[#edf2fa] ${
+                !readOnly ? "focus:bg-white border-2" : ""
+              }`}
+              readOnly={readOnly}
             />
           </div>
           {/* small menu */}
