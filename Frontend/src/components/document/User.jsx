@@ -1,6 +1,6 @@
 import { Avatar, Dropdown } from "flowbite-react";
 import { HiCog, HiOutlinePlusSm, HiLogout, HiViewGrid } from "react-icons/hi";
-import avatar from "../../images/Avatar.png";
+import avatar from "../../assets/images/Avatar.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createDocument } from "../../store/documents.slice";
@@ -31,7 +31,6 @@ function User() {
           <Dropdown.Item icon={HiViewGrid} as={Link} to="/">
             Home
           </Dropdown.Item>
-          {/* TODO Document Service */}
           <Dropdown.Item icon={HiOutlinePlusSm} onClick={createDocumentHandler}>
             New Document
           </Dropdown.Item>

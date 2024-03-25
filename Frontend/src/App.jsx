@@ -6,7 +6,7 @@ import TextEditor from "./pages/TextEditor";
 import Protected from "./components/auth/Protected";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SocketProvider from "./components/context/socket.context";
+import SocketProvider from "./context/socket.context";
 import { Provider } from "react-redux";
 import { store, persistor } from "./store/store";
 import { PersistGate } from "redux-persist/integration/react";
