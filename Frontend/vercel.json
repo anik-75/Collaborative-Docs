@@ -1,5 +1,9 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/(.*)", "destination": "/" },
+    {
+      "source": "/api",
+      "destination": "https://collab-docs-p4wb.onrender.com"
+    }
   ]
 }
