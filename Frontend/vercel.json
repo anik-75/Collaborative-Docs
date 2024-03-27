@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api",
-      "destination": "https://collab-docs-p4wb.onrender.com"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
