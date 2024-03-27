@@ -10,7 +10,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action) => {
+    setUser: (_state, action) => {
       return {
         username: action.payload.username,
         userId: action.payload.userId,
@@ -18,6 +18,7 @@ const userSlice = createSlice({
       };
     },
     removeUser: () => {
+      localStorage.removeItem("token");
       return initialState;
     },
   },
@@ -30,6 +31,7 @@ export const login = (credentials, successCallback) => {
     try {
       const response = await authService.login(credentials);
       if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
         dispatch(
           setUser({
             username: response.data.username,
