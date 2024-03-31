@@ -6,7 +6,7 @@ class DocumentService {
       const response = await axios.get(`/api/documents/${documentId}`, {
         withCredentials: true,
       });
-      if (response.status === 200 && response.statusText === "OK") {
+      if (response.status === 200) {
         return response.data.document;
       }
     } catch (err) {

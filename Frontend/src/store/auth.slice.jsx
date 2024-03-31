@@ -30,6 +30,7 @@ export const login = (credentials, successCallback) => {
     try {
       const response = await authService.login(credentials);
       if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
         dispatch(
           setUser({
             username: response.data.username,
@@ -46,11 +47,10 @@ export const login = (credentials, successCallback) => {
   };
 };
 
-export const logout = (successCallback) => {
+export const logout = () => {
   return (dispatch) => {
     dispatch(removeUser());
     localStorage.removeItem("persist:root");
-    successCallback("/login");
   };
 };
 

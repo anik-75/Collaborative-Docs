@@ -12,7 +12,6 @@ function TextEditorHeader({
   admin,
   readOnly,
 }) {
-  console.log(readOnly);
 
   const socket = useSocket();
   const changeTitleHandler = (e) => {

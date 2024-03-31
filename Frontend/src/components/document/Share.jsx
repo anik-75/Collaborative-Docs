@@ -7,7 +7,6 @@ function Share({
   collaboratorsRole,
 }) {
   const changeHandler = (e) => {
-    // console.log(e.target.value);
     saveDocument({ collaboratorsRole: e.target.value });
     setCollaboratorsRole(e.target.value);
   };

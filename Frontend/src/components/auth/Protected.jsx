@@ -1,6 +1,8 @@
 import { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { jwtDecode } from "jwt-decode";
+import { removeUser } from "../../store/auth.slice";
 
 function Protected({ authentication, children }) {
   const user = useSelector((store) => {
@@ -24,6 +26,8 @@ function Protected({ authentication, children }) {
     const token = localStorage.getItem("token");
     if (token) {
       validateToken(token);
+    }else{
+      dispatch(removeUser())
     }
 
     if (authentication && user.authStatus !== authentication) {
@@ -31,7 +35,7 @@ function Protected({ authentication, children }) {
     } else if (!authentication && user.authStatus !== authentication) {
       navigate("/");
     }
-  }, [user, authentication, navigate, validateToken]);
+  }, [user, authentication, navigate, validateToken, dispatch]);
 
   return <>{children}</>;
 }

@@ -1,7 +1,7 @@
-import EditorToolbar, {
+import QuillToolbar, {
   modules,
   formats,
-} from "../components/document/EditorToolbar";
+} from "../components/document/QuillToolbar";
 
 import { useEffect, useState, Fragment } from "react";
 import ReactQuill from "react-quill";
@@ -109,7 +109,7 @@ function TextEditor() {
       {/* Editor ToolBar */}
       <div className="text-editor bg-[#f3f3f3]">
         <div className="box-border  bg-[#f1f3f4] w-full h-1/5 border-2 border-slate-200 py-2 flex flex-row justify-center sticky top-0 z-[10]">
-          <EditorToolbar />
+          <QuillToolbar />
         </div>
 
         {/* Editor */}

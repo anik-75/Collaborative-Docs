@@ -43,7 +43,6 @@ const documentSlice = createSlice({
       const { sortBy, sortOrder } = action.payload;
 
       const mapped = state.searchDocuments.map((document) => {
-        console.log(document);
         return document;
       });
       if (sortOrder === "ASC") {
@@ -97,7 +96,7 @@ export const createDocument = (successCallback) => {
   return async (dispatch) => {
     try {
       const response = await documentService.createDocument();
-      if (response.status === 201 && response.statusText === "Created") {
+      if (response.status === 201) {
         dispatch(addDocument(response.data.document));
         successCallback(`/documents/${response.data.id}`);
       }
