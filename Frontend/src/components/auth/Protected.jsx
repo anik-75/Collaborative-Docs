@@ -1,10 +1,11 @@
-import { useCallback, useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { jwtDecode } from "jwt-decode";
-import { removeUser } from "../../store/auth.slice";
 
 function Protected({ authentication, children }) {
+  const user = useSelector((store) => {
+    return store.user;
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -18,10 +19,6 @@ function Protected({ authentication, children }) {
     },
     [dispatch]
   );
-
-  const user = useSelector((store) => {
-    return store.user;
-  });
 
   useEffect(() => {
     const token = localStorage.getItem("token");

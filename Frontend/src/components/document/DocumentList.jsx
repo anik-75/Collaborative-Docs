@@ -7,6 +7,7 @@ import { sortDocuments } from "../../store/documents.slice";
 const DocumentList = ({ documentListClickHandler, deleteDocumentHandler }) => {
   const document = useSelector((store) => store.document.searchDocuments);
   const dispatch = useDispatch();
+  console.log(document);
   const [sort, setSort] = useState({
     sortBy: "updatedAt",
     sortOrder: "DESC",
@@ -18,6 +19,7 @@ const DocumentList = ({ documentListClickHandler, deleteDocumentHandler }) => {
       sortOrder,
     });
     dispatch(sortDocuments({ sortBy, sortOrder }));
+    console.log("doc", document);
 
     setSort((prevState) => {
       return {
