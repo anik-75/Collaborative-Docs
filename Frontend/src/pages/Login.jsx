@@ -1,7 +1,8 @@
-import { Fragment, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../store/auth.slice";
+import { login, setUser } from "../store/auth.slice";
+import { jwtDecode } from "jwt-decode";
 
 const initialState = {
   email: "",
@@ -10,6 +11,7 @@ const initialState = {
 function Login() {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState(initialState);
+  const [query] = useSearchParams();
   const dispatch = useDispatch();
 
   function loginHandler(e) {
@@ -22,6 +24,21 @@ function Login() {
       })
     );
   }
+  const token = query.get("token");
+  useEffect(() => {
+    if (token) {
+      const decoded = jwtDecode(token);
+      console.log(decoded);
+      dispatch(
+        setUser({
+          userId: decoded.userId,
+          username: decoded?.user.username,
+        })
+      );
+      localStorage.setItem("token", token);
+      navigate("/");
+    }
+  }, [dispatch, navigate, token]);
 
   return (
     <Fragment>
@@ -99,14 +116,17 @@ function Login() {
                   or login with
                 </span>
               </h2>
-              <div className="mt-7">
-                <button className="rounded-md py-2 w-32 mr-4 border-black border-2 text-black">
-                  Github
-                </button>
 
-                <button className="rounded-md ml-4 py-2 w-32  border-red-500 border-2 text-red-500">
-                  Google
-                </button>
+              <div className="my-8">
+                <a
+                  href={`https://github.com/login/oauth/authorize?client_id=${
+                    import.meta.env.VITE_GITHUB_CLIENT_ID
+                  }&scope=user`}
+                >
+                  <button className=" rounded-md py-2 w-72 text-black border-2 border-black ">
+                    Github
+                  </button>
+                </a>
               </div>
             </div>
           </div>

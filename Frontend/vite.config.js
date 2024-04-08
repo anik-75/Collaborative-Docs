@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": "https://collab-docs-p4wb.onrender.com",
+      "/api": "http://localhost:3000",
     },
   },
 });

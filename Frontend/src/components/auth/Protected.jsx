@@ -26,7 +26,7 @@ function Protected({ authentication, children }) {
     const token = localStorage.getItem("token");
     if (token) {
       validateToken(token);
-    }else{
+    } else {
       dispatch(removeUser())
     }
 

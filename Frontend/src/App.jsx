@@ -56,6 +56,14 @@ function App() {
         </Protected>
       ),
     },
+    {
+      path: "/github/success",
+      element: (
+        <Protected authentication={false}>
+          <Login />
+        </Protected>
+      )
+    }
   ]);
   return (
     <Fragment>

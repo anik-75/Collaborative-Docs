@@ -27,6 +27,15 @@ class AuthService {
       console.log(error);
     }
   }
+
+  async githubAuth() {
+    try {
+      const data = await axios.get(`/api/authentications/github`);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 const authService = new AuthService();
