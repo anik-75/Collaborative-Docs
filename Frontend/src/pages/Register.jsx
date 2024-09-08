@@ -18,7 +18,7 @@ function Register() {
       if (data.status === 201) {
         setCredentials(initialState);
         navigate("/login");
-      } else {
+      } else{
         setCredentials(initialState);
       }
     } catch (error) {
